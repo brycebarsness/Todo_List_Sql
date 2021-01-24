@@ -5,26 +5,43 @@ let itemList = [];
 let completedItemId = 0;
 
 function start() {
-  // run getList function
-  getList();
-  // when Add Task button is clicked, run clickAdd
-  $(".js-btn-add").on("click", clickAdd);
+  // run getTask function
+  getTask();
+  // when Add Task button is clicked, run addTask
+  $(".js-btn-add").on("click", addTask);
+    // when complete button in js-container is clicked, run completeTask.
+  $(".js-container").on("click", ".js-btn-complete", completeTask);
 };
 
 
 // when clicked get info from dom, send to saveItem, clear input.
-function clickAdd() {
+function addTask() {
   const newItem = {
     item: $(".js-new-item").val(),
     complete: "N",
   };
-  saveItem(newItem);
+  saveTask(newItem);
   $(".js-new-item").val("");
 }
 
+// collect id from click event, target row using parent(), set current status to Y, 
+// and send completedItem object to updateTask.
+function completeTask(event) {
+  completedItemId = event.target.dataset.id;
+  const $itemRowElement = $(this).parent().parent();
+  const currentItem = $itemRowElement.children(".js-item").text().trim();
+  const currentStatus = "Y";
+  const completedItem = {
+    item: currentItem,
+    complete: currentStatus,
+  };
+  updateTask(completedItemId, completedItem);
+}
+
+
 // get the data from router using 'GET' method using '/tasks' route.
 // save the response as taskList then run render function with the taskList array.
-function getList() {
+function getTask() {
   $.ajax({
     method: "GET",
     url: "/tasks",
@@ -60,17 +77,33 @@ function render() {
 }
 
 // Send newItem to router url /tasks with POST, then use getList to update dom.
-function saveItem(newItem) {
+function saveTask(newItem) {
   $.ajax({
     method: "POST",
     url: "/tasks",
     data: newItem,
   })
     .then((response) => {
-      getList();
+      getTask();
     })
     .catch((err) => {
       console.log("Error:", err);
       console.warn("There was an error saving the new item");
+    });
+}
+
+// update task item through router at url /tasks/${id}, then call getTask to reset dom.
+function updateTask(id, completedItem) {
+  $.ajax({
+    method: "PUT",
+    url: `/tasks/${id}`,
+    data: completedItem,
+  })
+    .then((response) => {
+      getTask();
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      console.warn("There was an error updating completed item");
     });
 }
