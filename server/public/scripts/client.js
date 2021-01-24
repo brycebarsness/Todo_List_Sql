@@ -69,17 +69,23 @@ function getTask() {
 // add 'complete' class if status is Y.
 function render() {
   $(".js-container").empty();
+  let todo = $(".js-container.todo");
+  let done = $(".js-container.done");
+  console.log(`todo: ${todo}, done: ${done}`);
   for (let i = 0; i < taskList.length; i++) {
     const item = taskList[i];
-    $(".js-container").append(`
-    <tr class="row">
-      <td class ="js-item">${item.item}</td>
-      <td><button class ="js-btn-complete" data-id="${item.id}" data-index="${i}">Complete</button></td>
-      <td><button class ="js-btn-delete" data-id="${item.id}">Delete</button></td>
-    </tr>`);
+    let taskEl = $(`
+      <tr class="row">      
+        <td class ="js-item">${item.item}</td>
+        <td><button class ="js-btn-complete" data-id="${item.id}" data-index="${i}">Complete</button></td>
+        <td><button class ="js-btn-delete" data-id="${item.id}">Delete</button></td>
+      </tr>`);
     if (item.complete === "Y") {
-      const $el = $(".js-container").children().last();
-      $el.addClass("complete");
+      taskEl.addClass("complete");  //line: 78--${(item.complete === "Y") ? "complete" : ""}
+      done.append(taskEl);
+    }                           
+    else{ 
+      todo.append(taskEl);
     }
   }
 }
