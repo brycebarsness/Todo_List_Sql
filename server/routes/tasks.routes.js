@@ -17,12 +17,20 @@ router.get('/', (req, res) => {
     
 });
 
-
-
-
-
-
-
-
+//post route to get new task from client and insert to database
+router.post("/", (req, res) => {
+  const clientData = req.body;
+  const queryText = `INSERT INTO "tasks" ("item","complete") VALUES ($1,$2);`;
+  pool
+    .query(queryText, [clientData.item, clientData.complete])
+    .then((result) => {
+      console.log(result);
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      res.sendStatus(500);
+    });
+});
 
 module.exports = router;

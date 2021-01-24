@@ -4,6 +4,24 @@ $(document).ready(start);
 let itemList = [];
 let completedItemId = 0;
 
+function start() {
+  // run getList function
+  getList();
+  // when Add Task button is clicked, run clickAdd
+  $(".js-btn-add").on("click", clickAdd);
+};
+
+
+// when clicked get info from dom, send to saveItem, clear input.
+function clickAdd() {
+  const newItem = {
+    item: $(".js-new-item").val(),
+    complete: "N",
+  };
+  saveItem(newItem);
+  $(".js-new-item").val("");
+}
+
 // get the data from router using 'GET' method using '/tasks' route.
 // save the response as taskList then run render function with the taskList array.
 function getList() {
@@ -39,4 +57,20 @@ function render() {
       $el.addClass("complete");
     }
   }
+}
+
+// Send newItem to router url /tasks with POST, then use getList to update dom.
+function saveItem(newItem) {
+  $.ajax({
+    method: "POST",
+    url: "/tasks",
+    data: newItem,
+  })
+    .then((response) => {
+      getList();
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      console.warn("There was an error saving the new item");
+    });
 }
