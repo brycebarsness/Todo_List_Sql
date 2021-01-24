@@ -30,13 +30,18 @@ function addTask() {
 // and send completedItem object to updateTask.
 function completeTask(event) {
   completedItemId = event.target.dataset.id;
-  const $itemRowElement = $(this).parent().parent();
+  const $itemRowElement = $(this).closest("tr");
   const currentItem = $itemRowElement.children(".js-item").text().trim();
-  const currentStatus = "Y";
   const completedItem = {
     item: currentItem,
-    complete: currentStatus,
   };
+  if($itemRowElement.hasClass('complete')){
+    completedItem.complete = "N";
+  } 
+  else {
+    completedItem.complete = "Y";
+  }
+  
   updateTask(completedItemId, completedItem);
 }
 
@@ -75,9 +80,9 @@ function render() {
   for (let i = 0; i < taskList.length; i++) {
     const item = taskList[i];
     let taskEl = $(`
-      <tr class="row">      
+      <tr class="row">     
         <td class ="js-item">${item.item}</td>
-        <td><button class ="js-btn-complete" data-id="${item.id}" data-index="${i}">Complete</button></td>
+        <td><button class ="js-btn-complete" data-id="${item.id}" data-index="${i}">${(item.complete === "Y") ? "reset" : "complete"}</button></td>
         <td><button class ="js-btn-delete" data-id="${item.id}">Delete</button></td>
       </tr>`);
     if (item.complete === "Y") {
