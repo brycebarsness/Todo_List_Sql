@@ -28,13 +28,15 @@ h1 {
 }
 
 .input-field {
-  margin: 20px auto;
+ 
+  padding: 30px;
   background-color: rgba(148, 189, 162, 0.368);
   border: 3px rgb(129, 189, 132) solid;
   border-radius: 5px;
   width: 50%;
-  height: 90px;
-  line-height: 20px;
+  height: 150px;
+ 
+  display: inline-block;
 }
 
 .text-input {
@@ -47,6 +49,6 @@ h1 {
 }
 
 .row + .row {
-  border-top: 2px solid lavender;
+  border-top: 2px solid rgba(10, 27, 102, 0.34);
 }
 
