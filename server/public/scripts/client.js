@@ -11,6 +11,8 @@ function start() {
   $(".js-btn-add").on("click", addTask);
     // when complete button in js-container is clicked, run completeTask.
   $(".js-container").on("click", ".js-btn-complete", completeTask);
+   // when delete button in js-container is clicked, run clickDelete
+  $(".js-container").on("click", ".js-btn-delete", deleteBtn);
 };
 
 
@@ -38,6 +40,13 @@ function completeTask(event) {
   updateTask(completedItemId, completedItem);
 }
 
+// save the id of the item for the clicked delete button.
+// send the item id to deleteTask function
+function deleteBtn(event) {
+  console.log(this);
+  const itemId = event.target.dataset.id;
+  deleteTask(itemId);
+}
 
 // get the data from router using 'GET' method using '/tasks' route.
 // save the response as taskList then run render function with the taskList array.
@@ -52,7 +61,6 @@ function getTask() {
     })
     .catch((err) => {
       console.log("Error:", err);
-      console.warn("There was an error getting the list");
     });
 }
 
@@ -88,7 +96,6 @@ function saveTask(newItem) {
     })
     .catch((err) => {
       console.log("Error:", err);
-      console.warn("There was an error saving the new item");
     });
 }
 
@@ -104,6 +111,20 @@ function updateTask(id, completedItem) {
     })
     .catch((err) => {
       console.log("Error:", err);
-      console.warn("There was an error updating completed item");
+    });
+}
+
+// Send delete info to router at url /tasks/${id}, run getTask on response.
+function deleteTask(id) {
+  $.ajax({
+    method: "DELETE",
+    url: `/tasks/${id}`,
+  })
+    .then((response) => {
+      console.log("Delete", response);
+      getTask();
+    })
+    .catch((err) => {
+      console.log("Error:", err);
     });
 }
