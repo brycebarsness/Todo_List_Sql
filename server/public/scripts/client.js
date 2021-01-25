@@ -81,28 +81,30 @@ function render() {
   console.log(`todo: ${todo}, done: ${done}`);
   for (let i = 0; i < taskList.length; i++) {
     const item = taskList[i];
-    let taskDueDate = '';
-                if(item.due_date == null) {
-                    taskDueDate = '';
-                } else {
-                    taskDueDate = item.due_date.slice(0, 10);
-                }
+    let taskDueDate = new Date(item.due_date);
+    let dateToDisplay = taskDueDate.toString().slice(0, 15);
+                console.log(item.due_date);
+                console.log(typeof taskDueDate);
     let taskEl = $(`
       <tr class="row">     
         <td class ="js-item">${item.item}</td>
-        <td class="taskDueDate">${taskDueDate}</td>
+        <td class="taskDueDate">${dateToDisplay}</td>
         <td><button class ="js-btn-complete" data-id="${item.id}" data-index="${i}">${(item.complete === "Y") ? "reset" : "complete"}</button></td>
         <td><button class ="js-btn-delete" data-id="${item.id}">Delete</button></td>
       </tr>`);
     if (item.complete === "Y") {
       taskEl.addClass("complete");  //line: 78--${(item.complete === "Y") ? "complete" : ""}
       done.append(taskEl);
-    }                           
-    else{ 
+    }  else {                         
+      if (taskDueDate.toLocaleDateString() >= (new Date()).toLocaleDateString()){
+      taskEl.addClass("late");
+      todo.append(taskEl)
+    }
       todo.append(taskEl);
     }
   }
 }
+
 
 // Send newItem to router url /tasks with POST, then use getList to update dom.
 function saveTask(newItem) {
