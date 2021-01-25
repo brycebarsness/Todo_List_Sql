@@ -20,10 +20,12 @@ function start() {
 function addTask() {
   const newItem = {
     item: $(".js-new-item").val(),
+    due_date: $('#dueDate').val(),
     complete: "N",
   };
   saveTask(newItem);
   $(".js-new-item").val("");
+  $('#dueDate').val("");
 }
 
 // collect id from click event, target row using parent(), set current status to Y, 
@@ -79,9 +81,16 @@ function render() {
   console.log(`todo: ${todo}, done: ${done}`);
   for (let i = 0; i < taskList.length; i++) {
     const item = taskList[i];
+    let taskDueDate = '';
+                if(item.due_date == null) {
+                    taskDueDate = '';
+                } else {
+                    taskDueDate = item.due_date.slice(0, 10);
+                }
     let taskEl = $(`
       <tr class="row">     
         <td class ="js-item">${item.item}</td>
+        <td class="taskDueDate" data-id="${item.id}">${taskDueDate}</td>
         <td><button class ="js-btn-complete" data-id="${item.id}" data-index="${i}">${(item.complete === "Y") ? "reset" : "complete"}</button></td>
         <td><button class ="js-btn-delete" data-id="${item.id}">Delete</button></td>
       </tr>`);

@@ -20,9 +20,9 @@ router.get('/', (req, res) => {
 //post route to get new task from client and insert to database
 router.post("/", (req, res) => {
   const clientData = req.body;
-  const queryText = `INSERT INTO "tasks" ("item","complete") VALUES ($1,$2);`;
+  const queryText = `INSERT INTO "tasks" ("item", "complete", "due_date") VALUES ($1,$2,$3);`;
   pool
-    .query(queryText, [clientData.item, clientData.complete])
+ .query(queryText, [clientData.item, clientData.complete, clientData.due_date])
     .then((result) => {
       console.log(result);
       res.sendStatus(201);

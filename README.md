@@ -1,9 +1,23 @@
 # Project Name
 
-[Project Instructions](./INSTRUCTIONS.md), this line may be removed once you have updated the README.md
+FEATURE
+With this app, user will be able to:
 
-## Description
+Add new todo and due date from input field
+Inputs are added to the database 
+Delete a todo from the list and from database
+Toggle the complete button:
+set a task to complete
+reset the status to incomplete
 
-Your project description goes here. What problem did you solve? How did you solve it?
+DATABASE SETUP
+Create a new database with the name weekend-to-do-app. And run the sql from the database file.
 
-Additional README details can be found [here](https://github.com/PrimeAcademy/readme-template/blob/master/README.md).
+INSTALL AND RUN
+npm install
+npm start
+BUILT WITH
+jQuery for front end
+Node.js / Express for backend
+bootstrap for styling
+PostgreSQL for database
